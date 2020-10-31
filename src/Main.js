@@ -93,14 +93,19 @@ if (first !== "R" && first !== "A") {
   first = "R";
 }
 
-let defaultState = {
-  board: Array(3)
+let getEmptyBoard = () =>
+  Array(3)
     .fill(0)
-    .map((e) => Array(3).fill(null)),
+    .map((e) => Array(3).fill(null));
+
+let getDefaultState = () => ({
+  board: getEmptyBoard(),
   turn: first,
   winner: null,
   draw: false,
-};
+});
+
+let defaultState = getDefaultState();
 
 let reducer = (state, action) => {
   switch (action.type) {
@@ -118,6 +123,8 @@ let reducer = (state, action) => {
         winner: winner === "D" ? null : winner,
         draw: winner === "D" ? true : false,
       };
+    case "reload":
+      return getDefaultState();
     default:
       return state;
   }
@@ -128,6 +135,12 @@ let Board = () => {
     reducer,
     defaultState
   );
+
+  let reload = useCallback(() => {
+    dispatch({
+      type: "reload",
+    });
+  }, []);
 
   let tdClick = useCallback((x, y) => {
     dispatch({ type: "move", x, y });
@@ -155,14 +168,14 @@ let Board = () => {
         <>
           <h1>Winner is {winner === "A" ? "Angular." : "React!"}</h1>
           <Modal>
-            {winner === "A" && <Disappointed />}
-            {winner === "R" && <KnewIt />}
+            {winner === "A" && <Disappointed reload={reload} />}
+            {winner === "R" && <KnewIt reload={reload} />}
           </Modal>
         </>
       )}
       {draw && (
         <Modal>
-          <Draw />
+          <Draw reload={reload} />
         </Modal>
       )}
     </>
