@@ -2,6 +2,6 @@
 
 ### A Basic Tic Tac Toe game. The difference being with the Xs and the Os. The X is now React; the O is now Angular.
 
-> Test the app out. See the [Live Demo](https://4je50.csb.app/).
+> Test the app out. See the [Live Demo](https://1vpsr.csb.app/).
 
 *Created with Create React App*
